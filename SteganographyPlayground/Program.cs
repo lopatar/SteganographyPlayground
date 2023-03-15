@@ -9,5 +9,12 @@ internal static class Program
         Console.WriteLine("Welcome to Steganography playground!");
         var imagePath = Utils.GetImagePath();
         var image = new ImageFile(imagePath);
+
+        Console.Write("Input data to encode: ");
+        var data = Console.ReadLine() ?? "";
+        image.Encode(data);
+
+        imagePath = Utils.GetImagePath(true);
+        image.Save(imagePath);
     }
 }
