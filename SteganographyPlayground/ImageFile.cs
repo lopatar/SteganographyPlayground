@@ -33,6 +33,8 @@ internal sealed class ImageFile
         { (char)32, new Bgr24(255, 215, 215) }
     };
 
+    private static Dictionary<Bgr24, char> ColorChars => CharColors.ToDictionary(x => x.Value, x => x.Key);
+
     private readonly int _pixelCount;
     private readonly Image<Bgr24> _image;
 
@@ -75,6 +77,26 @@ internal sealed class ImageFile
         Console.WriteLine("Done! Use .Save()!");
     }
 
+    public string Decode()
+    {
+        var decodedData = "";
+
+        for (var i = 0; i < _image.Width; i++)
+        {
+            for (var j = 0; j < _image.Height; j++)
+            {
+                var imagePixel = _image[i, j];
+
+                if (ColorChars.TryGetValue(imagePixel, out var colorChar))
+                {
+                    decodedData += colorChar;
+                }
+            }
+        }
+
+        return decodedData;
+    }
+    
     public void Save(string path)
     {
         _image.SaveAsJpeg(path);
